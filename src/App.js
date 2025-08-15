@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import ProductList from "./components/ProductList";
 import Cart from "./components/Cart";
+import Login from "./pages/Login";
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const addToCart = (product) => {
     setCartItems([...cartItems, product]);
@@ -62,21 +64,54 @@ function App() {
               padding: "6px 12px",
               borderRadius: "5px",
               transition: "background 0.3s ease",
+              marginRight: "20px",
             }}
             onMouseOver={(e) => (e.target.style.backgroundColor = "#f2f2f2")}
             onMouseOut={(e) => (e.target.style.backgroundColor = "white")}
           >
             Cart ({cartItems.length})
           </Link>
+
+          <Link
+            to={isLoggedIn ? "/" : "/login"}
+            style={{
+              color: isLoggedIn ? "white" : "#4CAF50",
+              backgroundColor: isLoggedIn ? "#f44336" : "white",
+              textDecoration: "none",
+              fontWeight: "bold",
+              padding: "6px 12px",
+              borderRadius: "5px",
+              transition: "background 0.3s ease",
+            }}
+            onClick={() => {
+              if (isLoggedIn) {
+                setIsLoggedIn(false);
+                alert("Logged out successfully!");
+              }
+            }}
+          >
+            {isLoggedIn ? "Logout" : "Login"}
+          </Link>
         </div>
       </nav>
 
       {/* Routes */}
       <Routes>
-        <Route path="/" element={<ProductList addToCart={addToCart} />} />
+        <Route
+          path="/"
+          element={
+            <ProductList addToCart={addToCart} isLoggedIn={isLoggedIn} />
+          }
+        />
         <Route
           path="/cart"
-          element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} />}
+          element={
+            <Cart cartItems={cartItems} removeFromCart={removeFromCart} />
+          }
+        />
+        <Route
+          path="/login"
+          element={<Login setIsLoggedIn={setIsLoggedIn} />}
         />
       </Routes>
     </Router>
