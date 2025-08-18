@@ -7,14 +7,27 @@ const Login = ({ setIsLoggedIn }) => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (email === "test@example.com" && password === "123456") {
-      setMessage("✅ Login successful!");
-      setIsLoggedIn(true);
-      setTimeout(() => navigate("/"), 1000);
-    } else {
-      setMessage("❌ Invalid email or password");
+
+    try {
+      const res = await fetch("https://shopping-backend-ujl0.onrender.com/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setMessage("✅ Login successful!");
+        setIsLoggedIn(true);
+        setTimeout(() => navigate("/"), 1000);
+      } else {
+        setMessage(`❌ ${data.message || "Invalid credentials"}`);
+      }
+    } catch (error) {
+      setMessage("❌ Server error, please try again later.");
     }
   };
 
@@ -30,19 +43,18 @@ const Login = ({ setIsLoggedIn }) => {
       }}
     >
       <form
-  onSubmit={handleLogin}
-  style={{
-    width: "350px",
-    backgroundColor: "rgba(233, 229, 229, 1)",
-    padding: "2rem",
-    borderRadius: "20px",
-    boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
-    display: "flex",
-    flexDirection: "column",
-    gap: "1rem",
-  }}
->
-
+        onSubmit={handleLogin}
+        style={{
+          width: "350px",
+          backgroundColor: "rgba(233, 229, 229, 1)",
+          padding: "2rem",
+          borderRadius: "20px",
+          boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
+          display: "flex",
+          flexDirection: "column",
+          gap: "1rem",
+        }}
+      >
         <h2
           style={{
             textAlign: "center",
@@ -118,17 +130,16 @@ const Login = ({ setIsLoggedIn }) => {
             transition: "all 0.3s",
           }}
           onMouseEnter={(e) =>
-            (e.currentTarget.style.background = "linear-gradient(135deg, #a777e3, #6e8efb)")
+            (e.currentTarget.style.background =
+              "linear-gradient(135deg, #a777e3, #6e8efb)")
           }
           onMouseLeave={(e) =>
-            (e.currentTarget.style.background = "linear-gradient(135deg, #6e8efb, #a777e3)")
+            (e.currentTarget.style.background =
+              "linear-gradient(135deg, #6e8efb, #a777e3)")
           }
         >
           Login
         </button>
-
-        
-          
       </form>
     </div>
   );
