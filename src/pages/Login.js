@@ -4,65 +4,131 @@ import { useNavigate } from "react-router-dom";
 const Login = ({ setIsLoggedIn }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (email === "user@example.com" && password === "1234") {
+    if (email === "test@example.com" && password === "123456") {
+      setMessage("✅ Login successful!");
       setIsLoggedIn(true);
-      alert("Login Successful!");
-      navigate("/");
+      setTimeout(() => navigate("/"), 1000);
     } else {
-      alert("Invalid credentials!");
+      setMessage("❌ Invalid email or password");
     }
   };
 
   return (
-    <div style={{ padding: "2rem", maxWidth: "400px", margin: "auto" }}>
-      <h2>Login</h2>
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        background: "linear-gradient(135deg, #6e8efb, #a777e3)",
+        padding: "1rem",
+      }}
+    >
       <form
-        onSubmit={handleLogin}
-        style={{ display: "flex", flexDirection: "column" }}
-      >
+  onSubmit={handleLogin}
+  style={{
+    width: "350px",
+    backgroundColor: "rgba(233, 229, 229, 1)",
+    padding: "2rem",
+    borderRadius: "20px",
+    boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
+    display: "flex",
+    flexDirection: "column",
+    gap: "1rem",
+  }}
+>
+
+        <h2
+          style={{
+            textAlign: "center",
+            marginBottom: "1rem",
+            fontSize: "1.8rem",
+            color: "#4b2be3",
+            fontWeight: "bold",
+          }}
+        >
+          Login
+        </h2>
+
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
           style={{
-            padding: "10px",
-            marginBottom: "10px",
-            borderRadius: "4px",
+            padding: "12px 15px",
+            borderRadius: "12px",
             border: "1px solid #ccc",
+            outline: "none",
+            fontSize: "1rem",
+            transition: "all 0.3s",
           }}
+          onFocus={(e) => (e.target.style.borderColor = "#4b2be3")}
+          onBlur={(e) => (e.target.style.borderColor = "#ccc")}
+          required
         />
+
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
           style={{
-            padding: "10px",
-            marginBottom: "10px",
-            borderRadius: "4px",
+            padding: "12px 15px",
+            borderRadius: "12px",
             border: "1px solid #ccc",
+            outline: "none",
+            fontSize: "1rem",
+            transition: "all 0.3s",
           }}
+          onFocus={(e) => (e.target.style.borderColor = "#4b2be3")}
+          onBlur={(e) => (e.target.style.borderColor = "#ccc")}
+          required
         />
+
+        {message && (
+          <p
+            style={{
+              textAlign: "center",
+              color: message.includes("❌") ? "#e74c3c" : "#27ae60",
+              fontWeight: "500",
+              fontSize: "0.9rem",
+            }}
+          >
+            {message}
+          </p>
+        )}
+
         <button
           type="submit"
           style={{
-            padding: "10px",
-            borderRadius: "4px",
+            padding: "12px",
+            borderRadius: "12px",
             border: "none",
-            backgroundColor: "#4CAF50",
+            background: "linear-gradient(135deg, #6e8efb, #a777e3)",
             color: "#fff",
+            fontWeight: "bold",
+            fontSize: "1rem",
             cursor: "pointer",
+            transition: "all 0.3s",
           }}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.background = "linear-gradient(135deg, #a777e3, #6e8efb)")
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.background = "linear-gradient(135deg, #6e8efb, #a777e3)")
+          }
         >
           Login
         </button>
+
+        
+          
       </form>
     </div>
   );

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
 import ProductList from "./components/ProductList";
 import Cart from "./components/Cart";
 import Login from "./pages/Login";
+
+
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
@@ -72,26 +74,42 @@ function App() {
             Cart ({cartItems.length})
           </Link>
 
-          <Link
-            to={isLoggedIn ? "/" : "/login"}
-            style={{
-              color: isLoggedIn ? "white" : "#4CAF50",
-              backgroundColor: isLoggedIn ? "#f44336" : "white",
-              textDecoration: "none",
-              fontWeight: "bold",
-              padding: "6px 12px",
-              borderRadius: "5px",
-              transition: "background 0.3s ease",
-            }}
-            onClick={() => {
-              if (isLoggedIn) {
+          {/* Login / Logout Button */}
+          {isLoggedIn ? (
+            <Link
+              to="/"
+              style={{
+                color: "white",
+                backgroundColor: "#f44336",
+                textDecoration: "none",
+                fontWeight: "bold",
+                padding: "6px 12px",
+                borderRadius: "5px",
+                transition: "background 0.3s ease",
+              }}
+              onClick={() => {
                 setIsLoggedIn(false);
                 alert("Logged out successfully!");
-              }
-            }}
-          >
-            {isLoggedIn ? "Logout" : "Login"}
-          </Link>
+              }}
+            >
+              Logout
+            </Link>
+          ) : (
+            <Link
+              to="/login"
+              style={{
+                color: "#4CAF50",
+                backgroundColor: "white",
+                textDecoration: "none",
+                fontWeight: "bold",
+                padding: "6px 12px",
+                borderRadius: "5px",
+                transition: "background 0.3s ease",
+              }}
+            >
+              Login
+            </Link>
+          )}
         </div>
       </nav>
 
@@ -99,15 +117,11 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={
-            <ProductList addToCart={addToCart} isLoggedIn={isLoggedIn} />
-          }
+          element={<ProductList addToCart={addToCart} isLoggedIn={isLoggedIn} />}
         />
         <Route
           path="/cart"
-          element={
-            <Cart cartItems={cartItems} removeFromCart={removeFromCart} />
-          }
+          element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} />}
         />
         <Route
           path="/login"
